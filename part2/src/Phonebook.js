@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React,{ useState, useEffect } from 'react'
 import axios from 'axios'
 import {getAll, create, remove, update, test, Notification} from './services/phone.js'
 import './index.css'
@@ -34,12 +34,12 @@ const App = () => {
         })
         //catch error - person does not exist/ removed from server
         .catch(error => {
-          setMessage(`${newPerson.name} was already deleted`)
+          setMessage(error.response.data.error)
           setMessageStyle('error')
           setTimeout(() => {
             setMessage(null)
           },5000)
-          setPersons(persons.filter(person => person.id !== result.id))
+         // setPersons(persons.filter(person => person.id !== result.id))
         })
         console.log(request, 'request')
       }
@@ -54,16 +54,27 @@ const App = () => {
     }
     setNewName('')
     setNewNumber('')
-    const returnedPerson = create(newPerson)
-    returnedPerson.then(data => {
+    create(newPerson)
+    .then(data => {
+      //success
       setPersons(persons.concat(data))
+      //success notification 
+      setMessage(`Added ${newPerson.name}`)
+      setMessageStyle('notification')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000);
     })
-    //success notification 
-    setMessage(`Added ${newPerson.name}`)
-    setMessageStyle('notification')
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000);
+    .catch(error => {
+      //error message
+      console.log(error, 'my error')
+      setMessage(error.response.data.error)
+      setMessageStyle('error')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000);
+    })
+    
   }
 
   const filter =(event) => {
@@ -99,6 +110,7 @@ const App = () => {
   }
 
   useEffect(() => {
+    // console.log(axios.get('http://localhost:3001'))
     const request = getAll()
     console.log(request, 'promise')
     request.then(data => setPersons(data))
