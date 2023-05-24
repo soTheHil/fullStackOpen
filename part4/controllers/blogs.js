@@ -7,7 +7,8 @@ const middleware = require('../utils/middleware')
 blogRouter.get('/', (req, res) => {
     Blog
     .find({})
-    .populate('user', {username:1, name:1})
+        .populate('user', { username: 1, name: 1 })
+        //.populate('comments', {content: 1})
     .then(blogs => {
         // console.log(blogs[0], 'blog')
         // console.log(blogs[0].id, 'blog id')
@@ -36,7 +37,7 @@ blogRouter.post('/',middleware.tokenExtractor ,async (req, res, next) => {
     return res.status(401).json({error: "token invalid"})
    }
    const user = req.user
-//    console.log(user)
+    console.log(user, "MY USER")
 //    console.log(user.id, user._id, "two user ids")
    
     const blog = new Blog({
@@ -78,6 +79,7 @@ blogRouter.put('/:id', async (req, res, next) => {
 
 blogRouter.get('/:id', async (req, res, next) => {
     const blog = await Blog.findById(req.params.id)
+    .populate('comments', {content:1})
     res.json(blog)
 })
 
