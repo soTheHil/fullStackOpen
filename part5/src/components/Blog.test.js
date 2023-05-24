@@ -14,21 +14,20 @@ describe('blog', () => {
       author: 'BRO',
       title: 'Meppo returns',
       url: 'www.kd.com',
-      likes:5,
-      user:{
-        name:'Boh Ry Cho'
-      }
+      likes: 5,
+      user: {
+        name: 'Boh Ry Cho',
+      },
     }
 
-    container  = render(<Blog blog={blog} updateLikes={like}/>).container
+    container = render(<Blog blog={blog} updateLikes={like} />).container
   })
 
   test('renders blog author and title', () => {
-
     const div = container.querySelector('.blog')
 
     //const element = screen.getByText(blog.title+  ' ' + blog.author)
-    expect(div).toHaveTextContent(blog.title+' '+blog.author)
+    expect(div).toHaveTextContent(blog.title + ' ' + blog.author)
   })
 
   test('renders url and likes', async () => {
@@ -39,11 +38,10 @@ describe('blog', () => {
     const element = await screen.getByText('likes: 5', { exact: false })
     expect(element).toBeDefined()
 
-    const element2 = await screen.getByText(blog.url, { exact: false })
+
   })
 
-  test('like button',async () => {
-
+  test('like button', async () => {
     const user = userEvent.setup()
 
     const button = screen.getByText('Show')
@@ -55,8 +53,4 @@ describe('blog', () => {
     await user.click(likeBtn)
     expect(like.mock.calls).toHaveLength(2)
   })
-
 })
-
-
-

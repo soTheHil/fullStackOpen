@@ -3,22 +3,24 @@
 // create various custom commands and overwrite
 // existing commands.
 //
-Cypress.Commands.add('createBlog', ({ title, author, url }) => {
+Cypress.Commands.add("createBlog", ({ title, author, url }) => {
   cy.request({
-    url: 'http://localhost:3001/api/blogs',
-    method: 'POST',
+    url: "http://localhost:3001/api/blogs",
+    method: "POST",
     body: {
       title,
       author,
-      url
+      url,
     },
     headers: {
-      'Authorization': `Bearer ${JSON.parse(localStorage.getItem('loggedInUser')).token}`
-    }
-  })
+      Authorization: `Bearer ${
+        JSON.parse(localStorage.getItem("loggedInUser")).token
+      }`,
+    },
+  });
 
-  cy.visit('http://localhost:3000')
-})
+  cy.visit("http://localhost:3000");
+});
 // For more comprehensive examples of custom
 // commands please read more here:
 // https://on.cypress.io/custom-commands

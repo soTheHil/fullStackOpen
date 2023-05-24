@@ -4,10 +4,10 @@ import { render, screen } from '@testing-library/react'
 import BlogForm from './BlogForm'
 import userEvent from '@testing-library/user-event'
 
-test('add form', async  () => {
+test('add form', async () => {
   const addBlog = jest.fn()
   const user = userEvent.setup()
-  render(<BlogForm addBlog={addBlog}/>)
+  render(<BlogForm addBlog={addBlog} />)
 
   const createBtn = screen.getByText('create')
   const inputs = screen.getAllByRole('textbox')
